@@ -1,5 +1,7 @@
 # Quién llama
 
+**[⬇ Descargar el APK](https://github.com/alecelular/QuienLlama/releases/latest)** (Android 10 o superior). Después de instalarlo, seguí la sección "Puesta en marcha".
+
 App de Android que muestra el **nombre del contacto** en las llamadas entrantes aunque la operadora
 mande el número en un formato distinto al de la agenda.
 
