@@ -42,7 +42,7 @@ Necesitás JDK 17, Gradle 8.14 o superior y el SDK de Android con la plataforma 
 
 ```
 echo "sdk.dir=/ruta/a/tu/android-sdk" > local.properties
-gradle assembleDebug
+./gradlew assembleDebug
 ```
 
 El APK queda en `app/build/outputs/apk/debug/app-debug.apk`. También se puede abrir la carpeta con Android Studio.

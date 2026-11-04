@@ -69,7 +69,7 @@ sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
 ```
 cd QuienLlama
 echo "sdk.dir=/opt/android-sdk" > local.properties
-gradle assembleDebug
+./gradlew assembleDebug
 ```
 
 La primera vez baja dependencias y tarda unos minutos. El APK queda en
