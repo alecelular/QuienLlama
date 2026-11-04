@@ -61,3 +61,12 @@ To set up an Ubuntu machine from scratch, see [COMPILAR.md](COMPILAR.md) (in Spa
 © 2026 Alejandro F. Fernández (@alecelular on X, Instagram and other networks)
 
 **Contributions:** by sending changes (pull requests) you agree to license them under this same license and allow the author to reuse them, including in commercial versions.
+
+## Support the project
+
+If you found this useful, you can buy me a coffee:
+[![Buy me a coffee](https://cdn.cafecito.app/img/buttons/button_1.svg)](https://cafecito.app/rsp148)
+
+---
+
+*I hope you enjoy this project as much as I enjoyed developing it.*
