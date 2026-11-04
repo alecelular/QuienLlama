@@ -74,3 +74,13 @@ hace falta permiso del autor.
 
 **Contribuciones:** si enviás cambios (pull requests), se entiende que los cedés bajo esta misma licencia
 y que el autor puede reutilizarlos, incluso en versiones comerciales.
+
+## Apoyar el proyecto
+
+Si te resultó útil, podés invitarme un café:
+[![Invitame un café](https://cdn.cafecito.app/img/buttons/button_1.svg)](https://cafecito.app/rsp148)
+
+---
+
+*Espero que disfruten este proyecto tanto como yo disfruté su
+desarrollo.*
