@@ -30,17 +30,29 @@ solo coinciden por igualdad exacta. La lógica está en
 [`SuffixMatcher.kt`](app/src/main/java/com/quienllama/SuffixMatcher.kt), con tests en
 [`SuffixMatcherTest.kt`](app/src/test/java/com/quienllama/SuffixMatcherTest.kt).
 
+## Últimas llamadas
+
+El marcador del teléfono dibuja su propia lista de recientes y otra app no puede modificarla. Por eso la app
+trae su propia pantalla **"Últimas llamadas"**, con los nombres identificados por el mismo criterio que el cartel.
+
+Además hay una opción **experimental** (apagada por defecto): escribir el nombre en el campo "nombre guardado" del
+registro de llamadas, solo en las llamadas que quedaron sin nombre y que la app identifica con un único contacto.
+Si el marcador de tu teléfono muestra ese campo, el nombre aparece en su propia lista. Necesita el permiso de
+escribir el registro de llamadas; nunca modifica llamadas que ya tienen nombre.
+
 ## Privacidad
 
 La app **no tiene permiso de Internet** y no guarda ni envía tus contactos: la agenda se lee en memoria
-solo para comparar números. Podés comprobarlo en el
+solo para comparar números. Los permisos del registro de llamadas son opcionales y se usan solo en el teléfono.
+Podés comprobarlo en el
 [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
 
 ## Requisitos
 
 - Android 10 o superior.
 - Permisos: leer contactos, mostrar sobre otras apps, ser la "app de identificación de llamadas" y, para ver
-  el nombre con el teléfono bloqueado, notificaciones y "notificaciones a pantalla completa".
+  el nombre con el teléfono bloqueado, notificaciones y "notificaciones a pantalla completa". Opcionales: leer el registro de llamadas (pantalla
+  "Últimas llamadas") y escribirlo (experimento de nombres).
 
 ## Compilar
 
@@ -64,6 +76,8 @@ Ajustes → Aplicaciones → Elegir apps predeterminadas → App de ID y spam. D
 
 - Probada en un Samsung Galaxy A17 con operadoras Claro y Movistar. Otros fabricantes pueden comportarse distinto.
 - El cartel flota sobre la pantalla de llamada (no la reemplaza); su altura se ajusta desde la app.
+- El experimento de nombres en el registro depende de que el marcador muestre el campo "nombre guardado"; no está
+  garantizado.
 - Con el teléfono bloqueado Android no permite ventanas flotantes, así que el cartel se abre como una
   notificación de pantalla completa (necesita el cuarto permiso). Se pide ~1,5 s después de que suena la llamada
   para quedar por encima de la pantalla de llamada. Para diagnosticar: `adb logcat -s QuienLlama`.

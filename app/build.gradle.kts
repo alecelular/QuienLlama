@@ -11,8 +11,8 @@ android {
         applicationId = "com.quienllama"
         minSdk = 29          // CallScreeningService + RoleManager (Android 10+)
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.2.0"
+        versionCode = 4
+        versionName = "1.3.0"
     }
 
     buildTypes {

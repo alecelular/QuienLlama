@@ -6,5 +6,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         ContactCache.register(this)
+        CallLogNames.register(this)
     }
 }

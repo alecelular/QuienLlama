@@ -22,16 +22,28 @@ Details: a contact matches if its digits *end with* the tested suffix; contacts 
 [`SuffixMatcher.kt`](app/src/main/java/com/quienllama/SuffixMatcher.kt), with tests in
 [`SuffixMatcherTest.kt`](app/src/test/java/com/quienllama/SuffixMatcherTest.kt).
 
+## Recent calls
+
+The phone's dialer draws its own recents list and another app cannot change it. So the app has its own
+**"Últimas llamadas" (recent calls)** screen, with names identified by the same rule as the banner.
+
+There is also an **experimental** option (off by default): writing the name into the call log's "cached name" field,
+only for calls that were left without a name and that the app identifies with a single contact. If your phone's dialer
+displays that field, the name shows up in its own list. It needs the permission to write the call log and never
+modifies calls that already have a name.
+
 ## Privacy
 
-The app has **no Internet permission** and does not store or send your contacts: the address book is read into memory only to compare numbers. You can check this in the
+The app has **no Internet permission** and does not store or send your contacts: the address book is read into memory only to compare numbers. The call log permissions are optional and are used only on the phone.
+You can check this in the
 [`AndroidManifest.xml`](app/src/main/AndroidManifest.xml).
 
 ## Requirements
 
 - Android 10 or newer.
 - Permissions: read contacts, display over other apps, being the device's "caller ID & spam app" and, to show the
-  name while the phone is locked, notifications and "full-screen notifications".
+  name while the phone is locked, notifications and "full-screen notifications". Optional: reading the call log ("Últimas llamadas" screen) and
+  writing it (names experiment).
 
 ## Setup
 
@@ -54,6 +66,8 @@ To set up an Ubuntu machine from scratch, see [COMPILAR.md](COMPILAR.md) (in Spa
 
 - Tested on a Samsung Galaxy A17 with two Argentine carriers. Other manufacturers may behave differently.
 - The banner floats over the call screen (it does not replace it); its vertical position can be adjusted in the app.
+- The names experiment in the call log depends on the dialer displaying the "cached name" field; it is not
+  guaranteed.
 - While the phone is locked Android does not allow floating windows, so the banner is opened as a full-screen
   notification instead (this needs the fourth permission). It is requested ~1.5 s after the call starts ringing so it
   ends up above the call screen. To diagnose: `adb logcat -s QuienLlama`.

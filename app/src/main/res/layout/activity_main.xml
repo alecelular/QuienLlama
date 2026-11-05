@@ -181,7 +181,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="4. Apoyar el proyecto"
+            android:text="4. Últimas llamadas"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="El marcador del teléfono no se puede modificar desde otra app; esta pantalla muestra tus últimas llamadas con los nombres que identifica Quién llama." />
+
+        <Button
+            android:id="@+id/btnRecent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver últimas llamadas" />
+
+        <CheckBox
+            android:id="@+id/cbWriteLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Experimental: escribir el nombre en el registro de llamadas del teléfono (solo en las que quedaron sin nombre), por si el marcador lo muestra" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="5. Apoyar el proyecto"
             android:textSize="20sp"
             android:textStyle="bold" />
 

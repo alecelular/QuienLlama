@@ -34,6 +34,13 @@ object Prefs {
     /** Distancia del cartel desde el borde superior, en dp. */
     fun overlayTop(c: Context): Int = p(c).getInt("top", 96)
 
+    /** Experimental: escribir el nombre en el registro de llamadas del teléfono. */
+    fun writeLogNames(c: Context): Boolean = p(c).getBoolean("writeLog", false)
+
+    fun setWriteLogNames(c: Context, on: Boolean) {
+        p(c).edit().putBoolean("writeLog", on).apply()
+    }
+
     /** Si ya se pidió el permiso de notificaciones (para saber cuándo mandar a Ajustes). */
     fun notifAsked(c: Context): Boolean = p(c).getBoolean("notifAsked", false)
 

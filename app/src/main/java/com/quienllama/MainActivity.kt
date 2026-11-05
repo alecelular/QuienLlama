@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -26,6 +27,7 @@ class MainActivity : Activity() {
     private lateinit var etSecs: EditText
     private lateinit var etTop: EditText
     private lateinit var rgAmb: RadioGroup
+    private lateinit var cbWriteLog: CheckBox
     private lateinit var etTest: EditText
     private lateinit var tvResult: TextView
 
@@ -41,6 +43,7 @@ class MainActivity : Activity() {
         etSecs = findViewById(R.id.etSecs)
         etTop = findViewById(R.id.etTop)
         rgAmb = findViewById(R.id.rgAmb)
+        cbWriteLog = findViewById(R.id.cbWriteLog)
         etTest = findViewById(R.id.etTest)
         tvResult = findViewById(R.id.tvResult)
 
@@ -91,6 +94,31 @@ class MainActivity : Activity() {
             }
         }
 
+        findViewById<Button>(R.id.btnRecent).setOnClickListener {
+            if (checkSelfPermission(Manifest.permission.READ_CALL_LOG) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                startActivity(Intent(this, RecentCallsActivity::class.java))
+            } else {
+                requestPermissions(arrayOf(Manifest.permission.READ_CALL_LOG), REQ_CALLLOG)
+            }
+        }
+        cbWriteLog.setOnClickListener {
+            if (!cbWriteLog.isChecked) {
+                Prefs.setWriteLogNames(this, false)
+            } else if (CallLogNames.hasPermissions(this)) {
+                enableWriteLog()
+            } else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_CALL_LOG,
+                        Manifest.permission.WRITE_CALL_LOG
+                    ),
+                    REQ_WRITELOG
+                )
+            }
+        }
+
         // Solo abre la página en el navegador: la app no tiene permiso de Internet.
         findViewById<Button>(R.id.btnCafe).setOnClickListener {
             try {
@@ -118,6 +146,29 @@ class MainActivity : Activity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         ContactCache.invalidate()
         refreshStatus()
+        when (requestCode) {
+            REQ_CALLLOG ->
+                if (checkSelfPermission(Manifest.permission.READ_CALL_LOG) ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    startActivity(Intent(this, RecentCallsActivity::class.java))
+                }
+            REQ_WRITELOG ->
+                if (CallLogNames.hasPermissions(this)) {
+                    enableWriteLog()
+                } else {
+                    cbWriteLog.isChecked = false
+                    Prefs.setWriteLogNames(this, false)
+                    Toast.makeText(this, "Sin permiso, el experimento queda apagado", Toast.LENGTH_LONG).show()
+                }
+        }
+    }
+
+    private fun enableWriteLog() {
+        Prefs.setWriteLogNames(this, true)
+        CallLogNames.register(application)
+        CallLogNames.fillAsync(this)
+        Toast.makeText(this, "Activado", Toast.LENGTH_SHORT).show()
     }
 
     @Deprecated("Deprecated in Java")
@@ -131,6 +182,7 @@ class MainActivity : Activity() {
         etMin.setText(Prefs.minDigits(this).toString())
         etSecs.setText(Prefs.overlaySeconds(this).toString())
         etTop.setText(Prefs.overlayTop(this).toString())
+        cbWriteLog.isChecked = Prefs.writeLogNames(this)
         rgAmb.check(
             when (Prefs.ambiguityMode(this)) {
                 Prefs.AMB_FIRST -> R.id.rbFirst
@@ -186,6 +238,8 @@ class MainActivity : Activity() {
         const val REQ_CONTACTS = 1
         const val REQ_ROLE = 2
         const val REQ_NOTIF = 3
+        const val REQ_CALLLOG = 4
+        const val REQ_WRITELOG = 5
         const val CAFECITO_URL = "https://cafecito.app/rsp148"
     }
 }
