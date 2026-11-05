@@ -2,6 +2,7 @@ package com.quienllama
 
 import android.telecom.Call
 import android.telecom.CallScreeningService
+import android.util.Log
 
 /**
  * El sistema nos avisa de cada llamada entrante. No bloqueamos nada:
@@ -14,12 +15,21 @@ class CallerService : CallScreeningService() {
             if (callDetails.callDirection == Call.Details.DIRECTION_INCOMING) {
                 val number = callDetails.handle?.schemeSpecificPart
                 if (!number.isNullOrBlank()) {
-                    Announcer.announce(applicationContext, number)
+                    val msg = Announcer.announce(applicationContext, number)
+                    // Para diagnosticar con "adb logcat -s QuienLlama"
+                    Log.d(TAG, "llamada entrante: coincidencia=${msg?.title}")
+                } else {
+                    Log.d(TAG, "llamada entrante sin número")
                 }
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Log.w(TAG, "error al anunciar", e)
             // Pase lo que pase, la llamada debe seguir su curso.
         }
         respondToCall(callDetails, CallResponse.Builder().build())
+    }
+
+    private companion object {
+        const val TAG = "QuienLlama"
     }
 }

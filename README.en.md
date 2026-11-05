@@ -14,7 +14,8 @@ An Android app that shows the **contact's name** on incoming calls even when the
 2. If nothing matches, it drops one digit from the left and tries again, down to a configurable minimum (default 10).
 3. At the first level that has matches:
    - exactly one contact → its name is shown;
-   - several contacts → an amber banner lists **all matching names** (handy for spotting duplicate contacts).
+   - several contacts → an amber banner. You choose in the app what it shows: **all matching names** (handy for
+     spotting duplicate contacts), **only the first one** (alphabetical order, saying how many matched) or just a warning.
 4. It never falls back to a shorter match once it has found a longer one.
 
 Details: a contact matches if its digits *end with* the tested suffix; contacts are counted per contact (two numbers of the same person are not ambiguous); numbers shorter than the minimum (147, 911…) only match exactly. The logic lives in
@@ -29,11 +30,12 @@ The app has **no Internet permission** and does not store or send your contacts:
 ## Requirements
 
 - Android 10 or newer.
-- Permissions: read contacts, display over other apps, and being the device's "caller ID & spam app".
+- Permissions: read contacts, display over other apps, being the device's "caller ID & spam app" and, to show the
+  name while the phone is locked, notifications and "full-screen notifications".
 
 ## Setup
 
-Open the app and tap the three buttons at the top until all three show ✔. On Samsung devices the third one is also under
+Open the app and tap the four buttons at the top until all four show ✔. On Samsung devices the third one is also under
 Settings → Apps → Choose default apps → Caller ID & spam app. Then use "Probar sin llamar" (test without calling) to see the result for any number.
 
 ## Build
@@ -52,6 +54,10 @@ To set up an Ubuntu machine from scratch, see [COMPILAR.md](COMPILAR.md) (in Spa
 
 - Tested on a Samsung Galaxy A17 with two Argentine carriers. Other manufacturers may behave differently.
 - The banner floats over the call screen (it does not replace it); its vertical position can be adjusted in the app.
+- While the phone is locked Android does not allow floating windows, so the banner is opened as a full-screen
+  notification instead (this needs the fourth permission). It is requested ~1.5 s after the call starts ringing so it
+  ends up above the call screen. To diagnose: `adb logcat -s QuienLlama`.
+- The app's interface is currently in Spanish only.
 - The system dialer may not notify the app about numbers it already recognizes as contacts.
 
 ## License
@@ -61,3 +67,13 @@ To set up an Ubuntu machine from scratch, see [COMPILAR.md](COMPILAR.md) (in Spa
 © 2026 Alejandro F. Fernández (@alecelular on X, Instagram and other networks)
 
 **Contributions:** by sending changes (pull requests) you agree to license them under this same license and allow the author to reuse them, including in commercial versions.
+
+## Support the project
+
+If you found this useful, you can buy me a coffee:
+[![Buy me a coffee](https://cdn.cafecito.app/img/buttons/button_1.svg)](https://cafecito.app/rsp148)
+(there is also a button on the app's screen; it only opens this page in your browser).
+
+---
+
+*I hope you enjoy this project as much as I enjoyed developing it.*

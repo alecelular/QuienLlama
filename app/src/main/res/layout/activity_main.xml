@@ -54,6 +54,18 @@
             android:text="Elegir como app de identificación" />
 
         <TextView
+            android:id="@+id/tvNotif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btnNotif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Permitir aviso con el teléfono bloqueado" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -100,12 +112,36 @@
             android:inputType="number"
             android:maxLength="3" />
 
-        <Switch
-            android:id="@+id/swList"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Si hay ambigüedad, listar los nombres" />
+            android:text="Si varios contactos coinciden con el número:" />
+
+        <RadioGroup
+            android:id="@+id/rgAmb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mostrar todos los nombres" />
+
+            <RadioButton
+                android:id="@+id/rbFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mostrar solo el primero (orden alfabético)" />
+
+            <RadioButton
+                android:id="@+id/rbNone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No mostrar nombres, solo avisar" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/btnSave"
@@ -140,6 +176,33 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="4. Apoyar el proyecto"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Quién llama es gratis y de código abierto. Si te resultó útil, podés invitarme un café." />
+
+        <Button
+            android:id="@+id/btnCafe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="☕ Invitame un café" />
+
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="12sp" />
 
     </LinearLayout>
 </ScrollView>

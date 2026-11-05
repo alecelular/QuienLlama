@@ -3,6 +3,7 @@ package com.quienllama
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
@@ -22,55 +23,69 @@ object Overlay {
     private var wm: WindowManager? = null
     private val autoHide = Runnable { dismiss() }
 
-    fun show(ctx: Context, msg: Message, seconds: Int) {
+    /** Arma el cartel (mismo aspecto para el flotante y para el de pantalla bloqueada). */
+    fun buildCard(ctx: Context, msg: Message, onTap: () -> Unit): View {
+        val density = ctx.resources.displayMetrics.density
+        fun dp(v: Int) = (v * density).toInt()
+
+        val box = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(18), dp(14), dp(18), dp(14))
+            background = GradientDrawable().apply {
+                cornerRadius = dp(16).toFloat()
+                setColor(if (msg.ambiguous) 0xF2B26A00.toInt() else 0xF2263238.toInt())
+            }
+            setOnClickListener { onTap() }
+        }
+        box.addView(TextView(ctx).apply {
+            text = msg.title
+            setTextColor(Color.WHITE)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 26f)
+            setTypeface(typeface, Typeface.BOLD)
+        })
+        box.addView(TextView(ctx).apply {
+            text = msg.body
+            setTextColor(Color.WHITE)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
+            setPadding(0, dp(4), 0, 0)
+        })
+        // Margen lateral: se logra con un contenedor transparente.
+        return LinearLayout(ctx).apply {
+            setPadding(dp(12), 0, dp(12), 0)
+            addView(box, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ))
+        }
+    }
+
+    /**
+     * [overLockScreen]: pide además que la ventana se vea con el teléfono bloqueado.
+     * Android suele ignorarlo para ventanas flotantes; es solo un intento de último recurso.
+     */
+    @Suppress("DEPRECATION")
+    fun show(ctx: Context, msg: Message, seconds: Int, overLockScreen: Boolean = false) {
         val app = ctx.applicationContext
         if (!Settings.canDrawOverlays(app)) return
         handler.post {
             dismiss()
             val density = app.resources.displayMetrics.density
-            fun dp(v: Int) = (v * density).toInt()
+            val holder = buildCard(app, msg) { dismiss() }
 
-            val box = LinearLayout(app).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(dp(18), dp(14), dp(18), dp(14))
-                background = GradientDrawable().apply {
-                    cornerRadius = dp(16).toFloat()
-                    setColor(if (msg.ambiguous) 0xF2B26A00.toInt() else 0xF2263238.toInt())
-                }
-                setOnClickListener { dismiss() }
-            }
-            box.addView(TextView(app).apply {
-                text = msg.title
-                setTextColor(Color.WHITE)
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 26f)
-                setTypeface(typeface, android.graphics.Typeface.BOLD)
-            })
-            box.addView(TextView(app).apply {
-                text = msg.body
-                setTextColor(Color.WHITE)
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
-                setPadding(0, dp(4), 0, 0)
-            })
+            var flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            if (overLockScreen) flags = flags or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
 
             val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                flags,
                 PixelFormat.TRANSLUCENT
             ).apply {
                 gravity = Gravity.TOP
                 x = 0
-                y = dp(Prefs.overlayTop(app))   // se configura en la pantalla de la app
-            }
-            // Margen lateral: se logra con un contenedor transparente.
-            val holder = LinearLayout(app).apply {
-                setPadding(dp(12), 0, dp(12), 0)
-                addView(box, LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ))
+                y = (Prefs.overlayTop(app) * density).toInt()   // se configura en la pantalla de la app
             }
 
             try {

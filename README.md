@@ -20,7 +20,8 @@ número entrante contra la agenda.
 2. Si no hay coincidencia, quita un dígito por la izquierda y repite, hasta el mínimo configurado (por defecto 10).
 3. En el primer nivel con coincidencias:
    - un solo contacto → muestra su nombre;
-   - varios contactos → cartel ámbar con **todos los nombres** (útil para detectar contactos duplicados).
+   - varios contactos → cartel ámbar. Se elige en la app qué mostrar: **todos los nombres** (útil para detectar
+     contactos duplicados), **solo el primero** (orden alfabético, indicando cuántos coinciden) o solo un aviso.
 4. Nunca baja a un nivel más corto si ya encontró coincidencias.
 
 Detalles: un contacto coincide si sus dígitos *terminan* igual que el sufijo probado; se cuenta por contacto
@@ -38,7 +39,8 @@ solo para comparar números. Podés comprobarlo en el
 ## Requisitos
 
 - Android 10 o superior.
-- Permisos: leer contactos, mostrar sobre otras apps, y ser la "app de identificación de llamadas".
+- Permisos: leer contactos, mostrar sobre otras apps, ser la "app de identificación de llamadas" y, para ver
+  el nombre con el teléfono bloqueado, notificaciones y "notificaciones a pantalla completa".
 
 ## Compilar
 
@@ -54,7 +56,7 @@ Para preparar una Ubuntu desde cero, ver [COMPILAR.md](COMPILAR.md).
 
 ## Puesta en marcha
 
-Abrí la app y tocá los tres botones hasta que los tres queden en ✔. En Samsung, el tercero también está en
+Abrí la app y tocá los cuatro botones hasta que los cuatro queden en ✔. En Samsung, el tercero también está en
 Ajustes → Aplicaciones → Elegir apps predeterminadas → App de ID y spam. Después podés usar
 "Probar sin llamar" para ver el resultado con cualquier número.
 
@@ -62,6 +64,9 @@ Ajustes → Aplicaciones → Elegir apps predeterminadas → App de ID y spam. D
 
 - Probada en un Samsung Galaxy A17 con operadoras Claro y Movistar. Otros fabricantes pueden comportarse distinto.
 - El cartel flota sobre la pantalla de llamada (no la reemplaza); su altura se ajusta desde la app.
+- Con el teléfono bloqueado Android no permite ventanas flotantes, así que el cartel se abre como una
+  notificación de pantalla completa (necesita el cuarto permiso). Se pide ~1,5 s después de que suena la llamada
+  para quedar por encima de la pantalla de llamada. Para diagnosticar: `adb logcat -s QuienLlama`.
 - Es posible que el marcador del sistema no avise a la app de números que ya reconoce como contactos.
 
 ## Licencia
@@ -74,3 +79,14 @@ hace falta permiso del autor.
 
 **Contribuciones:** si enviás cambios (pull requests), se entiende que los cedés bajo esta misma licencia
 y que el autor puede reutilizarlos, incluso en versiones comerciales.
+
+## Apoyar el proyecto
+
+Si te resultó útil, podés invitarme un café:
+[![Invitame un café](https://cdn.cafecito.app/img/buttons/button_1.svg)](https://cafecito.app/rsp148)
+(también hay un botón en la pantalla de la app; solo abre esta página en tu navegador).
+
+---
+
+*Espero que disfruten este proyecto tanto como yo disfruté su
+desarrollo.*
